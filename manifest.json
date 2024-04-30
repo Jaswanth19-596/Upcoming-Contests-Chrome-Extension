@@ -1,0 +1,17 @@
+{
+  "name": "Upcoming Codeforces Contests",
+  "version": "1.0.0",
+  "description": "This is a Chrome Extension that displays upcoming Codeforces contests.",
+  "author": "Jaswanth Mada",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Upcoming Codeforces Events"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["axios.min.js"],
+      "matches": []
+    }
+  ]
+}
