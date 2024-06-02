@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="spin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -15,19 +16,19 @@
   <body>
     <!-- Give me a perfect div structure to display the contests -->
     <h1 class="heading">All Upcoming Contests</h1>
-    <div id="contests"></div>
 
     <div class="checkbox-container">
       <div class="checkbox">
+        <input type="checkbox" name="leetcode" id="leetcode" />
         <label for="leetcode">Leetcode</label>
-        <input type="checkbox" name="leetcode" id="leetcode">
       </div>
       <div class="checkbox">
+        <input type="checkbox" name="codeforces" id="codeforces" />
         <label for="codeforces">codeforces</label>
-        <input type="checkbox" name="codeforces" id="codeforces">
       </div>
     </div>
-
+    <div id="contests"></div>
+    <script src="spin.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

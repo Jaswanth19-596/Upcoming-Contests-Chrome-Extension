@@ -6,220 +6,249 @@ const getTime = (seconds) => {
   return `${hours}h ${minutes}m ${seconds1}s`;
 };
 
+const logos = new Map([
+  ['codechef', 'codechef-logo.png'],
+  ['leetcode', 'leetcode-logo.png'],
+  ['codeforces', 'codeforces-logo.png'],
+  ['codingninjas', 'codingninjas-logo.svg'],
+  ['atcoder', 'atcoder-logo.png'],
+]);
+
 const createCodeforcesTemplate = (contest) => {
-  return ` <div class="contest">
-    <div class="contest-name">
-      <h2>Contest Name : ${contest.name}</h2>
+  const container = document.createElement('div');
+
+  const innerHTML = `
+  <div class='contest' id=${contest.id}>
+    <div class="logo-container"> 
+    <img class = 'logo' src = ${logos.get(contest.name)} alt="logo"/>
+        </div> 
+        <div class='text-container'>
+        <div class="contest-name">
+        <h2>${contest.event.slice(0, 25)} ${
+    contest.event.length > 30 ? '...' : ''
+  }</h2>
+  </div>
+  <div class="description">
+    <div class="contest-type">
+    <p>Contest By : ${contest.name}</p>
     </div>
-    <div class="description">
-      <div class="contest-type">
-        <p>Contest type : ${contest.type}</p>
-      </div>
-      <div class="contest-start-time">
-        <p>Contest Starts In : ${getTime(contest.relativeTimeSeconds)}</p>
-      </div>
-      <div class="contest-end-time">
-        <p>Contest Duration : ${getTime(contest.durationSeconds)}</p>
-      </div>
+    <div class="contest-start-time">
+    <p>Contest Starts In : ${getTime(contest.startsIn)}</p>
     </div>
-  </div>`;
+    <div class="contest-end-time">
+    <p>Contest Duration : ${getTime(contest.duration)}</p>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+  `;
+  container.innerHTML = innerHTML;
+  return container;
 };
 
-
-const createLeetcodeTemplate = (contest) => {
-  return ` <div class="contest">
-    <div class="contest-name">
-      <h2>Contest Name : ${contest.name}</h2>
-    </div>
-    <div class="description">
-      <div class="contest-type">
-        <p>Contest type : ${contest.type}</p>
-      </div>
-      <div class="contest-start-time">
-        <p>Contest Starts In : ${getTime(contest.relativeTimeSeconds)}</p>
-      </div>
-      <div class="contest-end-time">
-        <p>Contest Duration : ${getTime(5400)}</p>
-      </div>
-    </div>
-  </div>`;
+const getSeconds = function (milliseconds) {
+  return Math.round(milliseconds / 1000);
 };
 
-// const fetchData = async (leetcode=false, codeforces = false) => {
-//   const response = await fetch('https://codeforces.com/api/contest.list');
+const getDays = function (seconds) {
+  seconds = Math.abs(seconds);
+  let minutes = Math.floor(seconds / 60);
+  seconds -= minutes * 60;
 
-//   const contests = await response.json();
-//   const allContests = contests.result;
+  let hrs = Math.floor(minutes / 60);
+  minutes -= hrs * 60;
 
-//   const upcomingContests = [];
+  const days = Math.floor(hrs / 24);
+  hrs -= days * 24;
 
-//   for (let i = 0; i < allContests.length; i++) {
-//     if (allContests[i].phase !== 'BEFORE') break;
+  return {
+    days,
+    hrs,
+    minutes,
+    seconds,
+  };
+};
 
-//     upcomingContests.push(allContests[i]);
-//   }
-//   console.log(upcomingContests);
-//   const contestsContainer = document.querySelector('#contests');
+const fetchData = async () => {
+  // Fetch contests data from Codeforces API
+  const response = await fetch('https://codeforces.com/api/contest.list');
+  const contests = await response.json();
+  const allContests = contests.result;
 
-//   for (let i = upcomingContests.length - 1; i >= 0; i--) {
-//     const contest = upcomingContests[i];
-//     const contestTemplate = document.createElement('div');
-//     contestTemplate.innerHTML = createCodeforcesTemplate(contest);
-//     contestsContainer.appendChild(contestTemplate);
-//   }
+  // Adding the logo to each and every contest
+  for (let i = 0; i < allContests.length; i++) {
+    upcomingContests[i].logo = 'codeforces-logo.png';
+  }
 
-//   // console.log(upcomingContests);
+  return upcomingContests;
+};
+
+// fetchData();
+// const getLeetcodeContests = () => {
+//   const leetcodeWeeklyContestSeconds = timeUntilNextSaturday();
+//   const leetcodeBiweeklyContestSeconds = timeUntilNextSecondSaturday();
+
+//   return [
+//     {
+//       name: 'Leetcode Weekly Contest',
+//       type: 'Weekly',
+//       relativeTimeSeconds: leetcodeWeeklyContestSeconds,
+//       durationSeconds: 5400,
+//       logo: 'leetcode-logo.png',
+//     },
+//     {
+//       name: 'Leetcode Biweekly contest',
+//       type: 'Biweekly',
+//       relativeTimeSeconds: leetcodeBiweeklyContestSeconds,
+//       durationSeconds: 5400,
+//       logo: 'leetcode-logo.png',
+//     },
+//   ];
 // };
 
+const displayContests = (contests) => {
+  const contestsContainer = document.querySelector('#contests');
+  contestsContainer.innerHTML = '';
 
-const fetchData = async (leetcode = false, codeforces = false) => {
-    // Fetch contests data from Codeforces API
-    const response = await fetch('https://codeforces.com/api/contest.list');
-    const contests = await response.json();
-    const allContests = contests.result;
+  for (let contest of contests) {
+    const template = createCodeforcesTemplate(contest);
+    contestsContainer.appendChild(template);
 
-    // Filter upcoming contests
-    const upcomingContests = [];
-    for (let i = 0; i < allContests.length; i++) {
-        if (allContests[i].phase !== 'BEFORE') break;
-        upcomingContests.push(allContests[i]);
-    }
-
-
-
-
-
-    // Function to calculate time until the next Saturday
-    const timeUntilNextSaturday = () => {
-        console.log("Hehe")
-
-        const today = new Date();
-        const date = today.getDate();
-        const dayOfWeek = today.getDay();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-        const hours = 9;
-        const minutes = 30;
-
-        const final = new Date(date, month, year, hours, minutes );
-
-        console.log(final);
-
-
-
-        // const dayOfWeek = today.getDay();
-        // const hours = today.getHours();
-        // const minutes = today.getMinutes();
-
-        console.log(dayOfWeek);
-
-        // Calculate time until the next Saturday (assuming contests are on Saturday)
-        let daysToAdd = 6 - dayOfWeek; // Days until Saturday
-        if (hours > 21 || (hours === 21 && minutes >= 30)) {
-            daysToAdd += 7; // If it's already past 9:30 PM on Saturday, move to next week
-        }
-        const nextSaturday = new Date(today.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
-        nextSaturday.setHours(21); // Set the time to 9:30 PM
-        nextSaturday.setMinutes(30);
-        return Math.ceil((nextSaturday.getTime() - today.getTime()) / (1000 * 60 * 60)); // Time until next Saturday in hours
+    // Making the container to open a contest
+    const container = document.getElementById(contest.id);
+    container.onclick = () => {
+      window.open(contest.href, '_blank');
     };
-
-    // Function to calculate time until the next second Saturday
-    const timeUntilNextSecondSaturday = () => {
-      console.log("Haha")
-
-      
-        const today = new Date();
-        const date = today.getDate();
-        const dayOfWeek = today.getDay();
-        const year = today.getFullYear();
-        const month = today.getMonth();
-        const hours = 9;
-        const minutes = 30;
-
-        const final = new Date(year, month, date, hours, minutes );
-
-        // const today = new Date();
-        
-
-        console.log(final);
-        console.log(today - final)
-
-        // const today = new Date();
-        // const dayOfMonth = today.getDate();
-        // const day = today.getDay();
-        // const hours = today.getHours();
-        // const minutes = today.getMinutes();
-
-
-        // Calculate time until the next second Saturday of the month
-        let daysToAdd;
-        if (dayOfMonth <= 7) {
-            daysToAdd = 7 - dayOfMonth; // If it's before the first Saturday, go to the first Saturday
-        } else {
-            daysToAdd = 14 - (dayOfMonth % 7); // If it's after the first Saturday, go to the second Saturday
-        }
-        const nextSecondSaturday = new Date(today.getTime() + daysToAdd * 24 * 60 * 60 * 1000);
-        nextSecondSaturday.setHours(9); // Set the time to 9:30 AM
-        nextSecondSaturday.setMinutes(30);
-        return Math.ceil((nextSecondSaturday.getTime() - today.getTime()) / (1000 * 60 * 60)); // Time until next second Saturday in hours
-    };
-
-    // Calculate time until the next LeetCode contest based on checkboxes
-    const leetcodeContestTime = (leetcode && upcomingContests.length === 0) ? 
-                                (timeUntilNextSaturday() + 24 * (upcomingContests.length > 0)) :
-                                (leetcode && upcomingContests.length > 0) ? 
-                                (timeUntilNextSecondSaturday()) : 0;
-                                
-    const contestsContainer = document.querySelector('#contests');
-    // Display time until next LeetCode contest
-    if (leetcode) {
-        const leetcodeElement = document.createElement('div');
-        const contest = {
-          name : 'Leetcode Contest',
-          durationSeconds : 1500,
-          relativeTimeSeconds : leetcodeContestTime,
-          type : 'Weekly'
-        }
-        leetcodeElement.innerHTML = createLeetcodeTemplate(contest);
-        contestsContainer.appendChild(leetcodeElement);
-    }
-
-    // Display upcoming contests from Codeforces
-    for (let i = upcomingContests.length - 1; i >= 0; i--) {
-        const contest = upcomingContests[i];
-        const contestTemplate = document.createElement('div');
-        contestTemplate.innerHTML = createCodeforcesTemplate(contest);
-        contestsContainer.appendChild(contestTemplate);
-    }
+  }
 };
 
+var opts = {
+  lines: 20, // The number of lines to draw
+  length: 6, // The length of each line
+  width: 2, // The line thickness
+  radius: 10, // The radius of the inner circle
+  scale: 1.15, // Scales overall size of the spinner
+  corners: 1, // Corner roundness (0..1)
+  speed: 1, // Rounds per second
+  rotate: 0, // The rotation offset
+  animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+  direction: 1, // 1: clockwise, -1: counterclockwise
+  color: '#ffffff', // CSS color or array of colors
+  fadeColor: 'transparent', // CSS color or array of colors
+  top: '75%', // Top position relative to parent
+  left: '50%', // Left position relative to parent
+  shadow: '0 0 1px transparent', // Box-shadow for the lines
+  zIndex: 2000000000, // The z-index (defaults to 2e9)
+  className: 'spinner', // The CSS class to assign to the spinner
+  position: 'absolute', // Element positioning
+};
 
+const main = async () => {
+  const checkboxContainer = document.querySelector('.checkbox-container');
+  checkboxContainer.style.display = 'none';
 
-const leetcodeCheckbox = document.querySelector('#leetcode')
-const codeforcesCheckbox = document.querySelector('#codeforces')
+  // Making the checkboxes hidden
+  const leetcodeCheckbox = document.querySelector('#leetcode');
+  const codeforcesCheckbox = document.querySelector('#codeforces');
 
+  const contestsContainer = document.querySelector('#contests');
 
+  // By default, check them both
+  leetcodeCheckbox.checked = true;
+  codeforcesCheckbox.checked = true;
 
+  var spinner = new Spinner(opts).spin(contestsContainer);
+  contestsContainer.appendChild(spinner.el);
 
-const reload = ()=>{
-    const leetcode = leetcodeCheckbox.checked;
-    const codeforces = codeforcesCheckbox.checked;
+  const codeforcesContests = await fetchData();
+  const leetcodeContests = getLeetcodeContests();
 
-    fetchData(leetcode, codeforces);
+  checkboxContainer.style.display = 'Block';
+  spinner.stop();
 
-    console.log("Reloaded")
-}
+  const getContests = () => {
+    const allContests = [];
+    if (codeforcesCheckbox.checked) {
+      allContests.push(...codeforcesContests);
+    }
 
+    if (leetcodeCheckbox.checked) {
+      allContests.push(...leetcodeContests);
+    }
+    allContests.sort(
+      (a, b) =>
+        Math.abs(a.relativeTimeSeconds) - Math.abs(b.relativeTimeSeconds)
+    );
+    return allContests;
+  };
 
+  leetcodeCheckbox.addEventListener('change', () => {
+    displayContests(getContests());
+  });
 
-leetcodeCheckbox.addEventListener('change', ()=>{
-    reload()
-})
+  codeforcesCheckbox.addEventListener('change', () => {
+    displayContests(getContests());
+  });
 
-codeforcesCheckbox.addEventListener('change', ()=>{
-    reload();
-})
+  const contests = getContests();
+  displayContests(contests);
+};
 
+// main();
 
-fetchData();
+const func = async () => {
+  const websites = [
+    'leetcode',
+    'codeforces',
+    'codechef',
+    'atcoder',
+    'codingninjas',
+  ];
+
+  const date = new Date();
+  const currentTime = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  console.log(currentTime);
+  const res = await fetch(
+    `https://clist.by:443/api/v4/contest/?start__gt=${currentTime}&order_by=start`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'ApiKey sparker96:4196bd508db94e25402c047be686358b43985359',
+      },
+    }
+  );
+  const data = await res.json();
+
+  const filteredContests = [];
+  for (const contest of data.objects) {
+    // Check if the contest belongs to any of the required websites
+
+    for (const website of websites) {
+      if (contest.host.includes(website)) {
+        // console.log(Date.parse(contest.start.replace('T', ' ')));
+        // Adding the Name of the website for my convenience
+
+        contest.name = website;
+        // Reducing 5 hours to be equal to central daylight time
+        contest.startsIn =
+          (Date.parse(contest.start.replace('T', ' ')) -
+            18000000 -
+            Date.parse(new Date().toGMTString())) /
+          1000;
+
+        console.log(Date.parse(new Date().toUTCString()));
+        filteredContests.push(contest);
+      }
+    }
+  }
+
+  console.log(filteredContests);
+  displayContests(filteredContests);
+};
+
+func();

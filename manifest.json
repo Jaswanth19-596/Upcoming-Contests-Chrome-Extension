@@ -1,12 +1,17 @@
 {
-  "name": "Upcoming Codeforces Contests",
+  "name": "Upcoming Contests",
   "version": "1.0.0",
   "description": "This is a Chrome Extension that displays upcoming Codeforces contests.",
+  "icons": {
+    "16": "logo-16.png",
+    "48": "logo-48.png",
+    "128": "logo-128.png"
+  },
   "author": "Jaswanth Mada",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
-    "default_title": "Upcoming Codeforces Events"
+    "default_title": "Upcoming Contests"
   },
   "web_accessible_resources": [
     {
