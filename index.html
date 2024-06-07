@@ -4,20 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="spin.css" />
+    <link rel="stylesheet" href="/css/spin.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="/css/dropdown-style.css" />
+
+    <!-- Fontawesome CDN Link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="stylesheet" href="/css/scrollbar.css" type="text/css" />
   </head>
   <body>
     <!-- Give me a perfect div structure to display the contests -->
-    <h1 class="heading">All Upcoming Contests</h1>
+    <h1 class="heading">Contest Tracker</h1>
 
-    <div class="checkbox-container">
+    <!-- <div class="checkbox-container">
       <div class="checkbox">
         <input type="checkbox" name="leetcode" id="leetcode" />
         <label for="leetcode">Leetcode</label>
@@ -26,9 +34,52 @@
         <input type="checkbox" name="codeforces" id="codeforces" />
         <label for="codeforces">codeforces</label>
       </div>
+    </div> -->
+    <div class="container">
+      <div class="select-btn">
+        <span class="btn-text">Select Websites</span>
+        <span class="arrow-dwn">
+          <i class="fa-solid fa-chevron-down"></i>
+        </span>
+      </div>
+
+      <ul class="list-items">
+        <li class="website">
+          <span class="checkbox">
+            <i class="fa-solid fa-check check-icon"></i>
+          </span>
+          <span class="website-name">Leetcode</span>
+        </li>
+        <li class="website">
+          <span class="checkbox">
+            <i class="fa-solid fa-check check-icon"></i>
+          </span>
+          <span class="website-name">Codeforces</span>
+        </li>
+        <li class="website">
+          <span class="checkbox">
+            <i class="fa-solid fa-check check-icon"></i>
+          </span>
+          <span class="website-name">Codechef</span>
+        </li>
+        <li class="website">
+          <span class="checkbox">
+            <i class="fa-solid fa-check check-icon"></i>
+          </span>
+          <span class="website-name">Atcoder</span>
+        </li>
+        <li class="website">
+          <span class="checkbox">
+            <i class="fa-solid fa-check check-icon"></i>
+          </span>
+          <span class="website-name">CodingNinjas</span>
+        </li>
+      </ul>
     </div>
+
     <div id="contests"></div>
-    <script src="spin.js"></script>
-    <script src="script.js"></script>
+    <script src="/js/spin.js"></script>
+    <script src="/js/dropdown-script.js"></script>
+    <script src="/js/script.js"></script>
   </body>
 </html>

@@ -14,10 +14,15 @@ body {
 }
 
 .heading {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -1px;
   text-align: center;
   padding: 20px;
+}
+
+#contests {
+  min-height: 200px;
 }
 
 .contest {
@@ -25,13 +30,14 @@ body {
   color: #2c3e50;
   border: 2px solid #2c3e50;
   transition: all 0.5s;
-
   background-color: #fbfb21;
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 20px;
   border-radius: 10px;
+  box-shadow: 0 4px 12px #444;
+  position: relative;
 }
 
 .contest:hover {
@@ -127,4 +133,42 @@ body {
 
 .checkbox input[type='checkbox']:checked {
   color: #fff;
+}
+
+.arrow-container {
+  margin-top: 10px;
+  width: 31%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 245px;
+  bottom: 10px;
+  padding: 2px;
+  background-color: white;
+  border-radius: 100px;
+}
+
+.arrow-container:hover .arrow {
+  transform: rotate(0deg);
+}
+
+.contest:hover .arrow-container {
+  color: black !important;
+}
+
+.enter-contest-para {
+  font-size: 10px;
+  font-weight: 650;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-right: 10px;
+}
+
+.arrow {
+  width: 20px;
+  transition: all 1s;
+  transform: rotate(-180deg);
+  border-radius: 100px;
 }

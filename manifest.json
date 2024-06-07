@@ -1,17 +1,15 @@
 {
-  "name": "Upcoming Contests",
+  "name": "Contest Tracker",
   "version": "1.0.0",
   "description": "This is a Chrome Extension that displays upcoming Codeforces contests.",
   "icons": {
-    "16": "logo-16.png",
-    "48": "logo-48.png",
-    "128": "logo-128.png"
+    "128": "/logos/finallogo.png"
   },
   "author": "Jaswanth Mada",
   "manifest_version": 3,
   "action": {
     "default_popup": "index.html",
-    "default_title": "Upcoming Contests"
+    "default_title": "Contest Tracker"
   },
   "web_accessible_resources": [
     {
